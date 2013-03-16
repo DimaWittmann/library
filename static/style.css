@@ -1,0 +1,27 @@
+
+div.page {
+	width: 700px;
+	margin: auto;
+}
+
+div.head {
+	font-size: 300%;
+	background: #9A118E;
+	color: white;
+}
+
+div.flash{
+	text-align: center;
+}
+
+div.menu{
+	margin: auto;
+}
+#BookList{
+	margin: 0px 0px 0px 20px;
+	width: 50%;
+	float: left;
+}
+#AuthorList{
+	float: left;
+}

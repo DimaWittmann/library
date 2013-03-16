@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block menu %}
+	{% if not session['sign_in'] %}
+		<a href="{{ url_for('register') }}">Sing up</a>
+		<a href="{{ url_for('sign_in') }}">Sing in</a>
+	{% else %}
+		<a href=# class=editMode> Edit</a>
+		<a href="{{ url_for('sign_out') }}">Sing out</a>
+	{% endif %}
+{% endblock %}
+{% block body %}
+	<div id="BookList">
+		<h3>books:</h3>
+		
+		<div class=editField>
+			<input type=text size=15 name=new_book>
+			<a href=# id="add_book">Add book</a>
+		</div>
+		
+	    <ul >
+	    {% for book in books %}
+	        <li>{{book.title}}</li>
+	    {% endfor %}
+	    </ul>
+
+	</div>
+
+	<div id="AuthorList">
+		<h3>authors:</h3>
+	    <ul >
+	    {% for author in authors %}
+	        <li>{{author.name}}</li>
+	    {% endfor %}
+	    </ul>
+	</div>
+
+{% endblock %}
