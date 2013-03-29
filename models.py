@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.schema import ForeignKey, Table
 from sqlalchemy.orm import relationship
-from database import Base, init_db
+from database import Base
 
 
 class  User(Base):
@@ -24,14 +24,14 @@ class  User(Base):
                 return "<User ('%s', '%i', '%s')>" %(self.name, self.id, self.password)
 
 
-class Book_Author(Base):
-        __tablename__ = "book_authors"
-        __table_args__ = {'autoload': True, 'extend_existing': True,}
+Book_Author = Table("book_authors", Base.metadata,
+                Column('author_id', Integer, ForeignKey('author.id')),
+                Column('book_id', Integer, ForeignKey('book.id'))
+                )
 
 
 class Book(Base):
         __tablename__ = 'book'
-        __table_args__ = {'extend_existing': True}
         id = Column(Integer, primary_key=True)
         title = Column(String(50), unique=True)
 
@@ -44,11 +44,10 @@ class Book(Base):
 
 class Author(Base):
         __tablename__ = 'author'
-        __table_args__ = {'extend_existing': True}
         id = Column(Integer, primary_key=True)
         name = Column(String(50), unique=True)
 
-        books = relationship("book", secondary=Book_Author, backref='author')
+        books = relationship("Book", secondary="book_authors", backref='authors')
 
         def __init__(self, name):
                 self.name = name
@@ -57,6 +56,4 @@ class Author(Base):
                 return "<Author ('%s', '%i')>"  %(self.name, self.id)
 
 
-if __name__ == "__main__":
-    init_db()
     

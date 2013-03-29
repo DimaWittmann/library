@@ -4,22 +4,17 @@
 		<a href="{{ url_for('register') }}">Sing up</a>
 		<a href="{{ url_for('sign_in') }}">Sing in</a>
 	{% else %}
-		<a href=# class=editMode> Edit</a>
 		<a href="{{ url_for('sign_out') }}">Sing out</a>
+		<a href="{{ url_for('add_entity') }}">New record</a>
 	{% endif %}
 {% endblock %}
 {% block body %}
 	<div id="BookList">
 		<h3>books:</h3>
 		
-		<div class=editField>
-			<input type=text size=15 name=new_book>
-			<a href=# id="add_book">Add book</a>
-		</div>
-		
 	    <ul >
 	    {% for book in books %}
-	        <li>{{book.title}}</li>
+	        <li><a href="{{url_for('book', bID=book.id)}}">{{book.title}}</a></li>
 	    {% endfor %}
 	    </ul>
 
@@ -29,7 +24,7 @@
 		<h3>authors:</h3>
 	    <ul >
 	    {% for author in authors %}
-	        <li>{{author.name}}</li>
+	        <li><a href="{{url_for('author', aID=author.id)}}">{{author.name}}</a></li>
 	    {% endfor %}
 	    </ul>
 	</div>

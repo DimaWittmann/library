@@ -27,10 +27,15 @@ class SigninForm(Form):
 
 class AddBookForm(Form):
     title = TextField("Title", [validators.required("Please enter title"),\
-                    ExistsValidator(db_session, Book, Book.title)])
+                    UniqueValidator(db_session, Book, Book.title)])
 
 
 class AddAuthorForm(Form):
-    author = TextField("Author", [validators.required("Please enter name"),\
-                    ExistsValidator(db_session, Author, Author.name)])
+    name = TextField("Author", [validators.required("Please enter name"),\
+                    UniqueValidator(db_session, Author, Author.name)])
+
+
+class BookForm(Form):
+    title = TextField("Title", [validators.required("Please enter title"), ])
+
 

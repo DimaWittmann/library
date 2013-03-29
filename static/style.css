@@ -14,9 +14,6 @@ div.flash{
 	text-align: center;
 }
 
-div.menu{
-	margin: auto;
-}
 #BookList{
 	margin: 0px 0px 0px 20px;
 	width: 50%;
@@ -25,3 +22,8 @@ div.menu{
 #AuthorList{
 	float: left;
 }
+.add_book{
+    
+    
+}
+
