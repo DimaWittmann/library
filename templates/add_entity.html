@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block menu %}
+    <a href="/">Main</a>
+{% endblock %}
+{% block body %}
+	<form method=post action="{{ url_for('add_book') }}" class="add_book">
+	    <dl>
+			{{ render_field( form.new_book.title )}}
+		</dl>
+		<p><input type=submit value="Add book"/></p>
+	</form>
+    <form method=post action="{{ url_for('add_author') }}"  class="add_author">
+        <dl>
+            {{ render_field( form.new_author.name )}}
+        </dl>
+        <p><input type=submit value="Add author"/></p>
+    </form>
+{% endblock %}

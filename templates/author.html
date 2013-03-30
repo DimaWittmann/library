@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block menu %}
+    <a href="/">Main</a>
+{% endblock %}
+{% block body %}
+    <h2>{{name}}</h2>
+    {% if books %}
+        <h3>Books:
+        {% for book in books %}
+            {{book.title}}, 
+        {% endfor %}
+        </h3>
+    {% endif %}
+{% endblock %}

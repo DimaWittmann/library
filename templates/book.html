@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block menu %}
+    <a href="/">Main</a>
+{% endblock %}
+{% block body %}
+    <h2>{{title}}</h2>
+    {% if authors %}
+        <h3>Authors:
+        {% for author in authors %}
+            {{author.name}}
+        {% endfor %}
+        </h3>
+    {% endif %}
+{% endblock %}
