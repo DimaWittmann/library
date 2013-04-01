@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, session, g, flash, redirect,\
                   url_for, jsonify
-from forms import RegistrationForm, SigninForm, AddBookForm, AddAuthorForm
+from forms import RegistrationForm, SigninForm, AddBookForm, AddAuthorForm, \
+                  UpdateBookForm, UpdateAuthorForm
 from database import db_session
 from models import User, Book, Author
 
@@ -19,7 +20,7 @@ def index():
     books = db_session.query(Book).all()
 
     return render_template('index.html', session=session,\
-        books=books, authors=authors)
+                           books=books, authors=authors)
 
 
 @app.route('/sign_in', methods=['GET', 'POST'])
@@ -38,25 +39,59 @@ def sign_in():
 def sign_out():
     flash("Good bye {user}!".format(user=session["username"]))
     session["sign_in"] = False
-    return render_template('index.html', session=session)
+    authors = db_session.query(Author).all()
+    books = db_session.query(Book).all()
+    return render_template('index.html', session=session,\
+                           books=books, authors=authors)
 
 
 @app.route('/book/<int:bID>', methods=['GET', 'POST', 'DELETE'])
 def book(bID):
+    form = UpdateBookForm(request.form)
+    authors = db_session.query(Author).all()
+    form.authors.choices = [(i, authors[i - 1]) for i in xrange(1, len(authors) + 1)]
     selected_book = Book.query.filter(Book.id == bID).one()
+
     if request.method == 'GET':
         authors = selected_book.authors
-        return render_template("book.html", authors = authors, \
-               title = selected_book.title)
+        return render_template("book.html", authors=authors, \
+               book=selected_book, form=form)
+    elif request.method == 'POST' and form.validate():
+        book = Book.query.filter(Book.id == bID).one()
+        book.title = form.new_title.data
+        authors = request.form.getlist('authors')
+        authors = Author.query.filter(Author.id.in_(authors)).all()
+        for author in authors:
+            if author in book.authors:
+                book.authors.remove(author)
+            else:
+                book.authors.append(author)
+        db_session.commit()
+        return redirect(url_for("book", bID=bID))
+
 
 @app.route('/author/<int:aID>', methods=['GET', 'POST', 'DELETE'])
 def author(aID):
+    form = UpdateAuthorForm(request.form)
     selected_author = Author.query.filter(Author.id == aID).one()
+    books = Book.query.all()
+    form.books.choices = [(i, books[i - 1]) for i in xrange(1, len(books) + 1)]
     if request.method == 'GET':
         books = selected_author.books
-        return render_template("author.html", books = books,\
-               name = selected_author.name)
-
+        return render_template("author.html", books=books,\
+               author=selected_author, form=form)
+    elif request.method == 'POST' and form.validate():
+        author = Author.query.filter(Author.id == aID).one()
+        author.name = form.new_name.data
+        books = request.form.getlist('books')
+        books = Book.query.filter(Book.id.in_(books)).all()
+        for book in books:
+            if book in author.books:
+                author.books.remove(book)
+            else:
+                author.books.append(book)
+        db_session.commit()
+        return redirect(url_for("author", aID=aID))
 
 @app.route('/add_entity', methods=['GET', ])
 def add_entity():

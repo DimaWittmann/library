@@ -12,6 +12,5 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from models import User, Book, Author, Book_Author
     Base.metadata.create_all(bind=engine)
 

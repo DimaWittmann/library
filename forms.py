@@ -35,7 +35,11 @@ class AddAuthorForm(Form):
                     UniqueValidator(db_session, Author, Author.name)])
 
 
-class BookForm(Form):
-    title = TextField("Title", [validators.required("Please enter title"), ])
+class UpdateBookForm(Form):
+    new_title = TextField("New title")
+    authors = SelectMultipleField('Authors', coerce=int)
 
 
+class UpdateAuthorForm(Form):
+    new_name = TextField("New name")
+    books = SelectMultipleField('Books', coerce=int)

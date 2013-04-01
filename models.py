@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.schema import ForeignKey, Table
 from sqlalchemy.orm import relationship
-from database import Base
+from database import Base, init_db
 
 
 class  User(Base):
@@ -39,7 +39,7 @@ class Book(Base):
                 self.title = title
 
         def __repr__(self):
-                return "<Book ('%s', '%i')>"  %(self.title, self.id)
+                return "%s" % (self.title)
 
 
 class Author(Base):
@@ -53,7 +53,6 @@ class Author(Base):
                 self.name = name
 
         def __repr__(self):
-                return "<Author ('%s', '%i')>"  %(self.name, self.id)
+                return "%s" % (self.name,)
 
-
-    
+init_db()

@@ -1,12 +1,8 @@
 <!doctype html>
-<title>Library</title>
 <head>
-  
-  <script type=text/javascript src="{{url_for('static', filename='script.js') }}"/>
-  <script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"/>
-  <script type=text/javascript>
-    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-  </script>
+  <title>Library</title>
+  <script type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type=text/javascript src="{{url_for('static', filename='script.js') }}"></script>
   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -14,18 +10,15 @@
     <div class=head>
       Library
     </div>
-    <br>
     <div class=menu>
       {% block menu %}{% endblock %}
     </div>
     {% for message in get_flashed_messages() %}
       <div class=flash>{{ message }}</div>
     {% endfor %}
-    <br>
     <div class=body>
       {% block body %}{% endblock %}
     </div>
-    <br>
 
     <div class=footer>
     </div>

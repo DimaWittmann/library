@@ -22,5 +22,12 @@ div.flash{
 #AuthorList{
 	float: left;
 }
-
+.edit_pane{
+    float: left;
+    margin: 0px 0px 0px 50px;
+    display: none;
+}
+.info{
+    float: left;
+}
 

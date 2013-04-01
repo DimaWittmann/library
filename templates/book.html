@@ -2,14 +2,38 @@
 {% from "_formhelpers.html" import render_field %}
 {% block menu %}
     <a href="/">Main</a>
+    {% if session['sign_in'] %}
+        <a href="#" onclick="show_edit_pane()">Edit</a>
+    {% endif %}
 {% endblock %}
 {% block body %}
-    <h2>{{title}}</h2>
-    {% if authors %}
-        <h3>Authors:
-        {% for author in authors %}
-            {{author.name}}
-        {% endfor %}
-        </h3>
+    <script>
+        $(function(){
+            $("#new_title").attr("value", $("#title").html());
+        })
+        function show_edit_pane () {
+            $('.edit_pane').toggle();
+        }
+    </script>
+    <div class="info">
+        <h2 id='title'>{{book.title}}</h2>
+        {% if authors %}
+            <h3>Authors:
+                <ul>
+                {% for author in authors %}
+                    <li>{{author.name}}</li>
+                {% endfor %}
+                </ul>
+            </h3>
+        {% endif %}
+    </div>
+    {% if session['sign_in'] %}
+        <div class="edit_pane">
+            <form method=post action="{{url_for('book', bID=book.id)}}">
+                <dl>{{ render_field( form.new_title )}}</dl>
+                <dl>{{ render_field( form.authors )}}</dl>
+                <p><input type=submit value="Update book"/></p>
+            </form>
+        </div>
     {% endif %}
 {% endblock %}
