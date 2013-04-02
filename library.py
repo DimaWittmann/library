@@ -57,18 +57,21 @@ def book(bID):
         return render_template("book.html", authors=authors, \
                book=selected_book, form=form)
     elif request.method == 'POST' and form.validate():
-        book = Book.query.filter(Book.id == bID).one()
-        book.title = form.new_title.data
+        selected_book.title = form.new_title.data
         authors = request.form.getlist('authors')
         authors = Author.query.filter(Author.id.in_(authors)).all()
         for author in authors:
-            if author in book.authors:
-                book.authors.remove(author)
+            if author in selected_book.authors:
+                selected_book.authors.remove(author)
             else:
-                book.authors.append(author)
+                selected_book.authors.append(author)
         db_session.commit()
         return redirect(url_for("book", bID=bID))
-
+    elif request.method == 'DELETE':
+        flash('{book} is deleted'.format(book=selected_book.title))
+        db_session.delete(selected_book)
+        db_session.commit()
+        return url_for('index')
 
 @app.route('/author/<int:aID>', methods=['GET', 'POST', 'DELETE'])
 def author(aID):
@@ -81,18 +84,22 @@ def author(aID):
         return render_template("author.html", books=books,\
                author=selected_author, form=form)
     elif request.method == 'POST' and form.validate():
-        author = Author.query.filter(Author.id == aID).one()
-        author.name = form.new_name.data
+        selected_author.name = form.new_name.data
         books = request.form.getlist('books')
         books = Book.query.filter(Book.id.in_(books)).all()
         for book in books:
-            if book in author.books:
-                author.books.remove(book)
+            if book in selected_author.books:
+                selected_author.books.remove(book)
             else:
-                author.books.append(book)
+                selected_author.books.append(book)
         db_session.commit()
         return redirect(url_for("author", aID=aID))
-
+    elif request.method == 'DELETE':
+        flash('{author} is deleted'.format(author=selected_author.name))
+        db_session.delete(selected_author)
+        db_session.commit()
+        return url_for('index')
+    
 @app.route('/add_entity', methods=['GET', ])
 def add_entity():
     forms = {

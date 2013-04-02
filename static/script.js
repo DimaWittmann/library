@@ -1,12 +1,13 @@
+function show_edit_pane () {
+    $('.edit_pane').toggle();
+};
 
-
-
-
-function update_title(url){
-    $.post(url, {new_title : $('#new_title').val()},
-        function(){
-            alert($('#new_title').val());
-            $('#title').html($('#new_title').val());
+function delete_entity(url){
+    $.ajax({
+    	type: "DELETE",
+    	url: url, 
+        success: function(data, textStatus, jqXHR ){
+            window.location.replace(data[0]);
         }
-    )
+    })
 };

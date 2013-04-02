@@ -4,6 +4,7 @@
     <a href="/">Main</a>
     {% if session['sign_in'] %}
         <a href="#" onclick="show_edit_pane()">Edit</a>
+        <a href="#" onclick="delete_entity('{{url_for("book", bID=book.id)}}')">Delete</a>
     {% endif %}
 {% endblock %}
 {% block body %}
@@ -11,9 +12,7 @@
         $(function(){
             $("#new_title").attr("value", $("#title").html());
         })
-        function show_edit_pane () {
-            $('.edit_pane').toggle();
-        }
+
     </script>
     <div class="info">
         <h2 id='title'>{{book.title}}</h2>
