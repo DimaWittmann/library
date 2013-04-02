@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, session, g, flash, redirect,\
                   url_for, jsonify
 from forms import RegistrationForm, SigninForm, AddBookForm, AddAuthorForm, \
-                  UpdateBookForm, UpdateAuthorForm
+                  UpdateBookForm, UpdateAuthorForm, SearchForm
 from database import db_session
 from models import User, Book, Author
 
@@ -14,13 +14,18 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    form = SearchForm(request.form)
     authors = db_session.query(Author).all()
     books = db_session.query(Book).all()
-
+    if request.method == 'POST' and form.query.data != '':
+        authors = db_session.query(Author).\
+            filter(Author.name.like("%"+form.query.data+"%")).all()
+        books = db_session.query(Book).\
+            filter(Book.title.like("%"+form.query.data+"%")).all()
     return render_template('index.html', session=session,\
-                           books=books, authors=authors)
+                books=books, authors=authors, form=form)
 
 
 @app.route('/sign_in', methods=['GET', 'POST'])
@@ -31,7 +36,6 @@ def sign_in():
         session["username"] = form.username.data
         flash("Hello {user}!".format(user=session["username"]))
         return redirect(url_for('index'))
-
     return render_template('sign_in.html', form=form)
 
 
@@ -51,7 +55,6 @@ def book(bID):
     authors = db_session.query(Author).all()
     form.authors.choices = [(i, authors[i - 1]) for i in xrange(1, len(authors) + 1)]
     selected_book = Book.query.filter(Book.id == bID).one()
-
     if request.method == 'GET':
         authors = selected_book.authors
         return render_template("book.html", authors=authors, \

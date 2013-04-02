@@ -43,3 +43,7 @@ class UpdateBookForm(Form):
 class UpdateAuthorForm(Form):
     new_name = TextField("New name")
     books = SelectMultipleField('Books', coerce=int)
+
+
+class SearchForm(Form):
+    query = TextField("Search:", [validators.required("Please enter name")])
