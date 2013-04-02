@@ -10,31 +10,26 @@
 	{% endif %}
 {% endblock %}
 {% block body %}
-    
     <div class="search">
+        <script>
+            $(function(){
+                $("#query").attr("autocomplete", "off");
+            })
+        </script>
         <form method="post" action="{{ url_for('index')}}">
             <dl>{{render_field(form.query)}}</dl>
         </form>
-    </div>
-    
+    </div> 
 	<div id="BookList">
-		<h3>books:</h3>
-		
-	    <ul >
+		<h2>Books:</h2>
 	    {% for book in books %}
-	        <li><a href="{{url_for('book', bID=book.id)}}">{{book.title}}</a></li>
+	        <dl class="record"><a href="{{url_for('book', bID=book.id)}}">{{book.title}}</a></dl>
 	    {% endfor %}
-	    </ul>
-
 	</div>
-
 	<div id="AuthorList">
-		<h3>authors:</h3>
-	    <ul >
+		<h2>Authors:</h2>   
 	    {% for author in authors %}
-	        <li><a href="{{url_for('author', aID=author.id)}}">{{author.name}}</a></li>
-	    {% endfor %}
-	    </ul>
+	        <dl class="record"><a href="{{url_for('author', aID=author.id)}}">{{author.name}}</a></dl>
+	    {% endfor %}   
 	</div>
-
 {% endblock %}

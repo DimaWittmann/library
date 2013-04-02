@@ -30,4 +30,26 @@ div.flash{
 .info{
     float: left;
 }
+div.menu a{
+    font-size: x-large;
+    margin: 0px 20px 0px 0px;
+    text-decoration: none;
+    color: #9A118E;
+}
+
+div.menu a:hover{
+    color: white;
+    background-color: #9A118E;
+}
+
+
+.record a{
+    color: #104291;
+    font-size: large;
+    text-decoration: none;
+}
+.record a:hover{
+    text-decoration: underline;
+}
+
 

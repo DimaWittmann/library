@@ -21,7 +21,7 @@ class  User(Base):
                 self.email = email
 
         def __repr__(self):
-                return "<User ('%s', '%i', '%s')>" %(self.name, self.id, self.password)
+                return "<User ('%s', '%i', '%s')>" % (self.name, self.id, self.password)
 
 
 Book_Author = Table("book_authors", Base.metadata,

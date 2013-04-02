@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, session, g, flash, redirect,\
-                  url_for, jsonify
+from flask import Flask, render_template, request, session, flash, redirect,\
+                  url_for
 from forms import RegistrationForm, SigninForm, AddBookForm, AddAuthorForm, \
                   UpdateBookForm, UpdateAuthorForm, SearchForm
 from database import db_session
@@ -21,9 +21,9 @@ def index():
     books = db_session.query(Book).all()
     if request.method == 'POST' and form.query.data != '':
         authors = db_session.query(Author).\
-            filter(Author.name.like("%"+form.query.data+"%")).all()
+            filter(Author.name.like("%" + form.query.data + "%")).all()
         books = db_session.query(Book).\
-            filter(Book.title.like("%"+form.query.data+"%")).all()
+            filter(Book.title.like("%" + form.query.data + "%")).all()
     return render_template('index.html', session=session,\
                 books=books, authors=authors, form=form)
 
@@ -43,10 +43,7 @@ def sign_in():
 def sign_out():
     flash("Good bye {user}!".format(user=session["username"]))
     session["sign_in"] = False
-    authors = db_session.query(Author).all()
-    books = db_session.query(Book).all()
-    return render_template('index.html', session=session,\
-                           books=books, authors=authors)
+    return redirect(url_for("index"))
 
 
 @app.route('/book/<int:bID>', methods=['GET', 'POST', 'DELETE'])
@@ -76,6 +73,7 @@ def book(bID):
         db_session.commit()
         return url_for('index')
 
+
 @app.route('/author/<int:aID>', methods=['GET', 'POST', 'DELETE'])
 def author(aID):
     form = UpdateAuthorForm(request.form)
@@ -102,7 +100,8 @@ def author(aID):
         db_session.delete(selected_author)
         db_session.commit()
         return url_for('index')
-    
+
+
 @app.route('/add_entity', methods=['GET', ])
 def add_entity():
     forms = {
